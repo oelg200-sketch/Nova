@@ -13,7 +13,35 @@
   <meta property="og:image" content="https://bolt.new/static/og_default.png">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://bolt.new/static/og_default.png">
-  <script>try{var t=localStorage.getItem('nova-theme');if(t?t==='dark':window.matchMedia('(prefers-color-scheme: dark)').matches)document.documentElement.classList.add('dark')}catch(e){}</script>
+  <meta name="color-scheme" content="light dark" />
+  <script>
+  (function(){
+    var root=document.documentElement,KEY='nova-theme';
+    var SUN='<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg>';
+    var MOON='<svg viewBox="0 0 24 24"><path d="M20.5 15.2A8.5 8.5 0 0 1 8.8 3.5 8.5 8.5 0 1 0 20.5 15.2Z"></path></svg>';
+    function read(){try{return localStorage.getItem(KEY)}catch(e){return null}}
+    function save(v){try{localStorage.setItem(KEY,v)}catch(e){}}
+    function sync(){
+      var dark=root.classList.contains('dark');
+      var buttons=document.querySelectorAll('.theme-toggle');
+      for(var i=0;i<buttons.length;i++){
+        buttons[i].setAttribute('aria-label',dark?'Activar modo claro':'Activar modo oscuro');
+        buttons[i].innerHTML=dark?SUN:MOON;
+      }
+    }
+    var saved=read(),prefersDark=false;
+    try{prefersDark=window.matchMedia('(prefers-color-scheme: dark)').matches}catch(e){}
+    if(saved?saved==='dark':prefersDark)root.classList.add('dark');
+    document.addEventListener('click',function(e){
+      var t=e.target&&e.target.closest?e.target.closest('.theme-toggle'):null;
+      if(!t)return;
+      root.classList.toggle('dark');
+      save(root.classList.contains('dark')?'dark':'light');
+      sync();
+    });
+    if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',sync);else sync();
+  })();
+  </script>
 </head>
 <body>
   <div class="announcement"><span class="pulse-dot"></span> Envío gratis en compras superiores a $75 <a href="#catalogo">Ver colección</a><button class="announcement-close" aria-label="Cerrar aviso">×</button></div>

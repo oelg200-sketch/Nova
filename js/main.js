@@ -90,19 +90,7 @@ function setupCarousel(){
   $('.spotlight-viewport')?.addEventListener('touchend',restart,{passive:true});
   update();restart();
 }
-function setupTheme(){
-  let saved=null;
-  try{saved=localStorage.getItem('nova-theme')}catch(e){}
-  const prefersDark=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;
-  document.documentElement.classList.toggle('dark',saved?saved==='dark':prefersDark);
-  const button=$('.theme-toggle');
-  if(!button)return;
-  const update=()=>{const dark=document.documentElement.classList.contains('dark');button.setAttribute('aria-label',dark?'Activar modo claro':'Activar modo oscuro');button.innerHTML=dark?'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg>':'<svg viewBox="0 0 24 24"><path d="M20.5 15.2A8.5 8.5 0 0 1 8.8 3.5 8.5 8.5 0 1 0 20.5 15.2Z"></path></svg>'};
-  update();
-  button.addEventListener('click',()=>{document.documentElement.classList.toggle('dark');try{localStorage.setItem('nova-theme',document.documentElement.classList.contains('dark')?'dark':'light')}catch(e){}update()});
-}
 function setup(){
-  setupTheme();
   setupCarousel();
   const queryCategory=new URLSearchParams(window.location.search).get('categoria');
   if(queryCategory&&categories.includes(queryCategory))activeCategory=queryCategory;
